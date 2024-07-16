@@ -9,11 +9,13 @@ import { Link, useNavigate } from "react-router-dom";
 import AdminMenu from "../../Menu/AdminMenu/AdminMenu";
 import AgetnMenu from "../../Menu/AgentMenu/AgetnMenu";
 import UserMenu from "../../Menu/UserMenu/UserMenu";
+import useUser from "../../hooks/useUser";
 
 
 
 const Sidebar = () => {
-	const role = 'user'
+	
+	const user = useUser()
 	// const { logOut } = useAuth()
 	const [isActive, setActive] = useState(false)
 	// const navigate = useNavigate()
@@ -37,9 +39,9 @@ const Sidebar = () => {
 				{/* <AdminMenu></AdminMenu> */}
 				{/* <TourGuideMenu></TourGuideMenu> */}
 			
-				{role === 'Admin' && <AdminMenu></AdminMenu>}
-			{role === 'Tourist' && <AgetnMenu></AgetnMenu>}
-			{role === 'user' && <UserMenu></UserMenu>}
+				{user?.role === 'Admin' && <AdminMenu></AdminMenu>}
+			{user?.role === 'Agent' && <AgetnMenu></AgetnMenu>}
+			{user?.role === 'User' && <UserMenu></UserMenu>}
 			</div>
 			<div>
 				<Link to='/'><button

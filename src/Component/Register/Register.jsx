@@ -1,14 +1,19 @@
-// src/components/Register.js
+import 'react-toastify/dist/ReactToastify.css';
+
 import axios from 'axios';
-import  { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+
 
 const Register = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         name: '',
         pin: '',
         mobileNumber: '',
         email: '',
+        status: 'pending',
         role: 'User', // default value
     });
 
@@ -18,20 +23,25 @@ const Register = () => {
             [e.target.name]: e.target.value,
         });
     };
-	
+
     const handleSubmit = async (e) => {
-		e.preventDefault();
-		console.log(formData)
+        e.preventDefault();
+        console.log(formData);
         try {
-            const response = await axios.post('/api/users/register', formData);
-            alert(response.data.message);
+            const response = await axios.put('http://localhost:5000/users', formData); // Removed leading slash
+            console.log(response.data); // Log the response to see what is returned
+            toast(response.data.message);
+            navigate('/dashboard/my-profile')
+            
         } catch (error) {
             console.error('Error registering user', error);
+           toast('Error registering user');
         }
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-800  p-4">
+        <div className="flex justify-center items-center min-h-screen bg-gray-800 p-4">
+            <ToastContainer/>
             <form className="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
@@ -67,13 +77,11 @@ const Register = () => {
                     </select>
                 </div>
                 <div className="flex items-center justify-between">
-                   <Link to='/dashboard'>
-                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                         Register
                     </button>
-                   </Link>
                 </div>
-            <p className='text-black text-xs'>already have an account? <Link to="login"><span className='font-bold'>log in</span></Link></p>
+                <p className='text-black text-xs'>already have an account? <Link to="login"><span className='font-bold'>log in</span></Link></p>
             </form>
         </div>
     );
