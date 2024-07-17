@@ -1,19 +1,23 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 // import useAuth from "../Pages/hooks/useAuth";
 import Sidebar from "../Component/Sidebar/Sidebar";
+import { useEffect } from "react";
 
 
 
 const DashboardLayout = () => {
-	// const {loading} = useAuth()
-	// if(loading) {
-	// 	return <>
-	// 	<div className="flex justify-center items-center h-screen">
-	// 	<span className="loading text-fuchsia-800  loading-bars loading-lg"></span>
-	// 	</div>
-	// 	</>
-	// }
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		// Check if token exists in local storage
+		const token = localStorage.getItem('token');
+		if (!token) {
+			// If no token, redirect to registration page
+			navigate('/');
+		}
+	}, [navigate]);
+	
 	return (
 		<div className="relative md:flex justify-evenly min-h-screen bg-gray-800">
 			{/* sidebar */}
@@ -24,8 +28,8 @@ const DashboardLayout = () => {
 
 			{/* dynamic content for outlet */}
 			<div className="flex-1">
-				<div className="p-5"> 
 				<ToastContainer></ToastContainer>
+				<div className="p-5"> 
 				<Outlet></Outlet>
 				</div>
 			

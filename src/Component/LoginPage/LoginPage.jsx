@@ -84,6 +84,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -105,16 +106,17 @@ const LoginPage = () => {
             const response = await axios.post('http://localhost:5000/api/users/login', formData);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data.user)); // Save user info to localStorage
-            alert(response.data.message);
+            toast(response.data.message);
             navigate('/dashboard/my-profile'); // Redirect to dashboard or any other protected route
         } catch (error) {
             console.error('Error logging in', error);
-            alert('Login failed, please check your credentials');
+            toast.error('Login failed, please check your credentials');
         }
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-800 p-4">
+            <ToastContainer></ToastContainer>
             <form className="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="identifier">

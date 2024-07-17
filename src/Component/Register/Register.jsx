@@ -31,10 +31,14 @@ const Register = () => {
             const response = await axios.put('http://localhost:5000/users', formData); // Removed leading slash
             console.log(response.data); // Log the response to see what is returned
             toast(response.data.message);
-            navigate('/dashboard/my-profile')
+            setTimeout(()=>{
+                
+                navigate('/login')
+            },2000)
             
         } catch (error) {
             console.error('Error registering user', error);
+           
            toast('Error registering user');
         }
     };
