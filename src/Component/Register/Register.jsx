@@ -39,7 +39,7 @@ const Register = () => {
         } catch (error) {
             console.error('Error registering user', error);
            
-           toast('Error registering user');
+           toast.error('Error registering user');
         }
     };
 
